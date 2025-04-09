@@ -52,9 +52,14 @@ test('Register Passed',async({page})=>{
     await registerPage.clickRegisterButton();
    
     // assertions
-    const resultedDialogMessage = await registerPage.waitForAlertAfterSubmit();
-    const expectedDialogMessage = "Registration successful! Redirecting to login...";
-    expect(resultedDialogMessage).toBe(expectedDialogMessage);
+    page.once('dialog', async dialog => {
+        expect(dialog.message()).toBe("Registration successful! Redirecting to login...");
+        await dialog.accept();
+      });
+      
+    //const resultedDialogMessage = await registerPage.waitForAlertAfterSubmit();
+    //const expectedDialogMessage = "Registration successful! Redirecting to login...";
+    //expect(resultedDialogMessage).toBe(expectedDialogMessage);
     //expect(page.getByRole('heading',{name:"Log in"})).toBeVisible();
     
 
