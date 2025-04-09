@@ -2,40 +2,70 @@ import {test, expect} from '@playwright/test'
 import { RegisterPage} from '../pages/register.page'
 import { userData } from '../data/testdata';
 import {LoginPage} from  '../pages/login.page';
+import {getUserByEmail} from '../utils/apiEcomus';
+import { deleteUserById } from '../utils/apiEcomus';
 
+const authToken = 'mi-token-super-secreto';
 
-test('Register Passed and login',async({page})=>{
+test.afterEach(async ({ request }) => {
+    const response = await request.get(`https://automation-portal-bootcamp.vercel.app/api/user?email=${userData.email}`);
+    const user = await response.json();
+  
+    console.log(user.id); // **Este es el id del usuario encontrado por email**
+   
+    // **Tarea:**
+    // Desarrollen la lógica restante:
+    // - Usen request.delete para eliminar el usuario utilizando su id.
+    // - Implementen la limpieza de datos después del test.
+    if (user?.id) {
+        const deleteUser = await request.delete(`https://automation-portal-bootcamp.vercel.app/api/user/${user.id}`);
+        console.log(`Usuario eliminado correctamente: ${userData.email}`);
+      } else {
+        console.warn(`Usuario no encontrado para eliminar: ${userData.email}`);
+      }
+  });
+  /*
+  test.afterEach(async ({ request }) => {
+    const user = await getUserByEmail(request, userData.email);
+  
+    if (user?.id) {
+      const deleted = await deleteUserById(request, user.id);
+  
+      if (deleted) {
+        console.log(`Usuario eliminado correctamente: ${userData.email}`);
+      } else {
+        console.warn(`Falló al eliminar el usuario: ${userData.email}`);
+      }
+    } else {
+      console.warn(`Usuario no encontrado para eliminar: ${userData.email}`);
+    }
+  });*/
+  
+
+test('Register Passed',async({page})=>{
     const registerPage = new RegisterPage(page);
-    const loginPage = new LoginPage(page);
+    await registerPage.goTo();
+    await registerPage.fillName(userData.name);
+    await registerPage.fillLastName(userData.lastname);
+    await registerPage.fillEmail(userData.email);
+    await registerPage.fillPassword(userData.password);
+    await registerPage.clickRegisterButton();
+   
+    // assertions
+    const resultedDialogMessage = await registerPage.waitForAlertAfterSubmit();
+    const expectedDialogMessage = "Registration successful! Redirecting to login...";
+    expect(resultedDialogMessage).toBe(expectedDialogMessage);
+    //expect(page.getByRole('heading',{name:"Log in"})).toBeVisible();
+    
 
-    await test.step('Register User', async () => {
-        await registerPage.goTo();
-        await registerPage.fillRegisterUser(userData.name,
+    await page.pause();
+    
+    
+    //await page.waitForTimeout(10000);
+});
+    
+ /*await registerPage.fillRegisterUser(userData.name,
         userData.lastname,
         userData.email,
         userData.password
-    )
-    // assertions
-    // Espera a que la redirección a Login ocurra
-    await page.waitForURL('**/login', { timeout: 10000 });
-    expect(page.getByRole('heading',{name:"Log in"})).toBeVisible();
-    await page.waitForTimeout(10000);
-    });
-    
-
-    await test.step('Login Passed', async () => {
-        await loginPage.goTo();
-        await loginPage.loginCredentials(userData.email,userData.password);
-
-        //assertions
-        expect( page.getByRole('link', {name:'Dashboard'})).toBeVisible();
-
-
-        await page.pause();
-        
-    });
-
-});
-
-
-
+    );*/
