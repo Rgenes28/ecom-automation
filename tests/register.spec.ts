@@ -51,12 +51,13 @@ test.afterEach(async ({ request }) => {
 
 test('Register Passed',async({page})=>{
     const registerPage = new RegisterPage(page);
-    await registerPage.goTo();
+    await registerPage.fillRegisterUser(userData.name,userData.lastname,userData.email,userData.password);
+    /*await registerPage.goTo();
     await registerPage.fillName(userData.name);
     await registerPage.fillLastName(userData.lastname);
     await registerPage.fillEmail(userData.email);
     await registerPage.fillPassword(userData.password);
-    await registerPage.clickRegisterButton();
+    await registerPage.clickRegisterButton();*/
    
     // assertions
     page.once('dialog', async dialog => {
