@@ -18,11 +18,18 @@ test.afterEach(async ({ request }) => {
     // - Usen request.delete para eliminar el usuario utilizando su id.
     // - Implementen la limpieza de datos después del test.
     if (user?.id) {
-        const deleteUser = await request.delete(`https://automation-portal-bootcamp.vercel.app/api/user/${user.id}`);
-        console.log(`Usuario eliminado correctamente: ${userData.email}`);
-      } else {
-        console.warn(`Usuario no encontrado para eliminar: ${userData.email}`);
-      }
+      const deleteUser = await request.delete(
+        `https://automation-portal-bootcamp.vercel.app/api/user/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`
+          }
+        }
+      );
+      console.log(`Usuario eliminado correctamente: ${userData.email}`);
+    } else {
+      console.warn(`Usuario no encontrado para eliminar: ${userData.email}`);
+    }
   });
   /*
   test.afterEach(async ({ request }) => {
