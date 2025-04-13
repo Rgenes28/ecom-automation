@@ -22,7 +22,7 @@ export class RegisterPage {
         await this.page.goto('https://automation-portal-bootcamp.vercel.app/register');
     }
    
-    async fillName(name: string) {
+    /*async fillName(name: string) {
         await this.nameInput.fill(name);
     }
     async fillLastName(Lastname: string) {
@@ -37,21 +37,22 @@ export class RegisterPage {
     async clickRegisterButton(){
         await this.RegisterButton.click();
     
-    } async waitForAlertAfterSubmit(): Promise<string> {
+    }*/
+    async waitForAlertAfterSubmit(): Promise<string> {
         const dialogUserRegistered = await this.page.waitForEvent('dialog');
         const message = dialogUserRegistered.message();
         await dialogUserRegistered.accept();
         return message;
       
     }
-    /*async fillRegisterUser(Name:string,Lastname: string,Email: string,Password: string){
+    async fillRegisterUser(Name:string,Lastname: string,Email: string,Password: string){
         await this.nameInput.fill(Name);
         await this.LastNameInput.fill(Lastname);
         await this.EmailInput.fill(Email);
         await this.PasswordInput.fill(Password);
         await this.RegisterButton.click();
 
-    }*/
+    }
 
 
 }

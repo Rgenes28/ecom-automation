@@ -5,6 +5,7 @@ export class LoginPage {
     readonly EmailInput:Locator;
     readonly PasswordInput:Locator;
     readonly LoginButton:Locator;
+    
 
     
     
@@ -13,6 +14,7 @@ export class LoginPage {
         this.EmailInput = page.locator('#loginEmail');
         this.PasswordInput = page.locator('#loginPassword');
         this.LoginButton = page.locator('#login > div > form > div:nth-child(4) > button');
+       
         
     }
     async goTo(){
@@ -23,6 +25,7 @@ export class LoginPage {
         await this.PasswordInput.fill(password);
         await this.LoginButton.click();
     }
+    
     
 
 }
