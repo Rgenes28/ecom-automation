@@ -38,6 +38,14 @@ export class RegisterPage {
         await this.RegisterButton.click();
     
     }*/
+    async fillRegisterUser(Name:string,Lastname: string,Email: string,Password: string){
+        await this.nameInput.fill(Name);
+        await this.LastNameInput.fill(Lastname);
+        await this.EmailInput.fill(Email);
+        await this.PasswordInput.fill(Password);
+        await this.RegisterButton.click();
+    
+    }
     async waitForAlertAfterSubmit(): Promise<string> {
         const dialogUserRegistered = await this.page.waitForEvent('dialog');
         const message = dialogUserRegistered.message();
@@ -45,14 +53,7 @@ export class RegisterPage {
         return message;
       
     }
-    async fillRegisterUser(Name:string,Lastname: string,Email: string,Password: string){
-        await this.nameInput.fill(Name);
-        await this.LastNameInput.fill(Lastname);
-        await this.EmailInput.fill(Email);
-        await this.PasswordInput.fill(Password);
-        await this.RegisterButton.click();
-
-    }
+   
 
 
 }
