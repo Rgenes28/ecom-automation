@@ -1,39 +1,55 @@
-import { Page,Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test"; 
+
+type ColorOption = 'beige' | 'black' | 'blue' | 'white';
+type SizeOption = 's' | 'm' | 'l' | 'xl';
 
 export class ProductPage {
-    readonly page:Page;
-    readonly colorOptions:Locator;
-    readonly sizeOptions:Locator;
-    readonly quantityInput:Locator;
-    readonly addTocart:Locator;
-    //readonly quantitySpanMinus:Locator;
-    //readonly quantitySpanPlus:Locator;
-
+    readonly page: Page;
+    readonly colorPicker: Locator;
+    readonly qtyItemSelector: Locator;
+    readonly sizeItemSelector: Locator;
+    readonly addToCartButton: Locator;
+    
     constructor(page:Page){
         this.page = page;
-        this.colorOptions = page.locator('(//span[@class="btn-checkbox bg-color-black"])[1]');
-        this.sizeOptions = page.locator("//div[@class='tf-product-info-list other-image-zoom']//p[contains(text(),'XL')]");
-        this.quantityInput = page.locator('(//input[@name="number"])[1]');
-        this.addTocart = page.locator('//*[@id="wrapper"]/section[1]/div[1]/div/div/div[2]/div/div[2]/div[8]/form/a[1]/span[1]')
-        //this.quantitySpanMinus = page.locator('(//span[@class="btn-quantity minus-btn"])[1]');
-        //this.quantitySpanPlus = page.locator('(//span[@class="btn-quantity plus-btn"])[1]');
-
+        this.colorPicker = page.locator(
+          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-variant-picker > div:nth-child(1) > form'
+        );
+        this.qtyItemSelector = page.locator(
+          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-quantity > div.wg-quantity'
+        );
+        this.sizeItemSelector = page.locator(
+          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-variant-picker > div:nth-child(2) > form'
+        )
+        this.addToCartButton = page.locator(
+          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-buy-button > form > a.tf-btn.btn-fill.justify-content-center.fw-6.fs-16.flex-grow-1.animate-hover-btn'
+        )
     }
-    async selectColor() {
-        await this.colorOptions.click();
-    }
-
-    async selectSize() {
-        await this.sizeOptions.click();
-        
-    }
-    async fillQuantity(quantity: number) {
-        await this.quantityInput.fill(''); 
-        await this.quantityInput.fill(quantity.toString());
-    }
-    async clickAddToCart(){
-        await this.addTocart.click();
+    
+    async selectColorFromPicker(colorToPick: ColorOption) {
+        const colorId = `values-${colorToPick.toLowerCase()}`;
+        const label = this.colorPicker.locator(`label[for="${colorId}"]`);
+        await label.click();
     }
 
+    async setItemQuantity(quantity: number) {
+        const plusBtn = this.qtyItemSelector.locator('.plus-btn');
+      
+        for (let i = 0; i < quantity; i++) {
+          await plusBtn.click();
+        }
+    }
+
+      async selectSizeFromPicker(sizeToPick: SizeOption) {
+        const sizeId = `values-${sizeToPick.toLowerCase()}`;
+        const label = this.sizeItemSelector.locator(`label[for="${sizeId}"]`);
+        await label.waitFor({ state: 'visible' });
+        await label.click();
+    }
+
+      async clickAddToCartButton() {
+        await this.page.screenshot({ path: 'debug-home.png', fullPage: true });
+        await this.addToCartButton.click();
+    }
 
 }

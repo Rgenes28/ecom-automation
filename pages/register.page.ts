@@ -22,7 +22,7 @@ export class RegisterPage {
         await this.page.goto('https://automation-portal-bootcamp.vercel.app/register');
     }
    
-    /*async fillName(name: string) {
+    async fillName(name: string) {
         await this.nameInput.fill(name);
     }
     async fillLastName(Lastname: string) {
@@ -37,13 +37,16 @@ export class RegisterPage {
     async clickRegisterButton(){
         await this.RegisterButton.click();
     
-    }*/
-    async fillRegisterUser(Name:string,Lastname: string,Email: string,Password: string){
+    }
+    async fillFormRegisterUser(Name:string,Lastname: string,Email: string,Password: string){
         await this.nameInput.fill(Name);
         await this.LastNameInput.fill(Lastname);
         await this.EmailInput.fill(Email);
         await this.PasswordInput.fill(Password);
         await this.RegisterButton.click();
+        await this.page.waitForURL('**/login', { timeout: 10000 });
+        
+        
     
     }
     async waitForAlertAfterSubmit(): Promise<string> {
