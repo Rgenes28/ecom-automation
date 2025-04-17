@@ -44,6 +44,7 @@ export class RegisterPage {
         await this.EmailInput.fill(Email);
         await this.PasswordInput.fill(Password);
         await this.RegisterButton.click();
+        await this.waitForAlertAfterSubmit();
         await this.page.waitForURL('**/login', { timeout: 10000 });
         
         
