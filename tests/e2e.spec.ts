@@ -12,7 +12,7 @@ test.afterEach(async ({ request }) => {
   const response = await request.get(`https://automation-portal-bootcamp.vercel.app/api/user?email=${userData.email}`);
   const user = await response.json();
   
-  console.log(user.id); // **Este es el id del usuario encontrado por email**
+  console.log(user.id); 
   if (user?.id) {
     const deleteUser = await request.delete(
       `https://automation-portal-bootcamp.vercel.app/api/user/${user.id}`,
