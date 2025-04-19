@@ -5,6 +5,7 @@ import { LoginPage } from '../pages/login.page'
 import { RegisterPage } from '../pages/register.page'
 import { MyAccountPage } from '../pages/myaccount.page'
 import { ProductPage } from '../pages/product.page'
+import { CheckoutPage } from '../pages/checkout.page'
 
 const authToken = 'mi-token-super-secreto';
 
@@ -34,6 +35,7 @@ test('End to End Test', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const myAccountPage = new MyAccountPage(page);
   const productPage = new ProductPage(page);
+  const checkoutPage = new CheckoutPage(page);
 
   await homePage.goto();
   await homePage.clikCloseModal();
@@ -53,5 +55,12 @@ test('End to End Test', async ({ page }) => {
   await productPage.selectSizeFromPicker('s');
   await productPage.setItemQuantity(2);
   await productPage.clickAddToCartButton();
+  await productPage.cartModal.clickCheckOutButton();
+  await checkoutPage.fillBillingDetailsForm(userData.name,userData.lastname,
+    userData.country,userData.town,userData.address,
+    userData.phone,userData.email,userData.notes
+  );
+  await checkoutPage.fillDiscountForm('leon123');
+  await checkoutPage.fillCreditCartForm(4242424242424242,"12/97",456);
  
 });
