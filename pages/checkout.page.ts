@@ -122,8 +122,6 @@ export class CheckoutPage {
         const successMessage = this.page.locator('text=Order saved successfully!');
         await expect(successMessage).toBeVisible({ timeout: 5000 });
         await this.page.screenshot({ path: 'saved-successfully.png', fullPage: true });
-        
-
       }
 
 
