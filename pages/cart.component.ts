@@ -13,6 +13,7 @@ export class CartComponent {
       }
 
     async clickCheckOutButton() {
+      await expect(this.checkOutButton).toBeVisible();
       await this.checkOutButton.click();
     }
 
