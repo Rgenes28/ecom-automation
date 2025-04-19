@@ -13,7 +13,13 @@ import {faker} from '@faker-js/faker';
 export const userData = {
     name: faker.person.firstName(),
     lastname: faker.person.lastName(),
+    phone: faker.phone.number(),
     email: faker.internet.email(),
-    password: faker.internet.password()
+    password: faker.internet.password(),
+    country:'Colombia',
+    town: faker.location.city(),
+    address: faker.location.direction(),
+    notes:'sajoajsojaosjaosjaojsoajsojasjaojosnsdbsgds'
+
 };
 

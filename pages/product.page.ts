@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test"; 
+import { CartComponent } from "./cart.component";
 
 type ColorOption = 'beige' | 'black' | 'blue' | 'white';
 type SizeOption = 's' | 'm' | 'l' | 'xl';
@@ -9,21 +10,23 @@ export class ProductPage {
     readonly qtyItemSelector: Locator;
     readonly sizeItemSelector: Locator;
     readonly addToCartButton: Locator;
+    readonly cartModal: CartComponent;
     
     constructor(page:Page){
-        this.page = page;
-        this.colorPicker = page.locator(
-          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-variant-picker > div:nth-child(1) > form'
-        );
-        this.qtyItemSelector = page.locator(
-          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-quantity > div.wg-quantity'
-        );
-        this.sizeItemSelector = page.locator(
-          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-variant-picker > div:nth-child(2) > form'
-        )
-        this.addToCartButton = page.locator(
-          'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-buy-button > form > a.tf-btn.btn-fill.justify-content-center.fw-6.fs-16.flex-grow-1.animate-hover-btn'
-        )
+      this.page = page;
+      this.colorPicker = page.locator(
+        'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-variant-picker > div:nth-child(1) > form'
+      );
+      this.qtyItemSelector = page.locator(
+        'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-quantity > div.wg-quantity'
+      );
+      this.sizeItemSelector = page.locator(
+        'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-variant-picker > div:nth-child(2) > form'
+      )
+      this.addToCartButton = page.locator(
+        'div:nth-child(2) > div > div.tf-product-info-list.other-image-zoom > div.tf-product-info-buy-button > form > a.tf-btn.btn-fill.justify-content-center.fw-6.fs-16.flex-grow-1.animate-hover-btn'
+      )
+      this.cartModal = new CartComponent(page);
     }
     
     async selectColorFromPicker(colorToPick: ColorOption) {
@@ -48,7 +51,6 @@ export class ProductPage {
     }
 
       async clickAddToCartButton() {
-        await this.page.screenshot({ path: 'debug-home.png', fullPage: true });
         await this.addToCartButton.click();
     }
 
