@@ -25,7 +25,7 @@ test('Complete Order', async ({page})=>{
     await checkoutPage.clickPlaceOrder();
     console.log('test exitoso');
     
-    await page.pause();
+    //await page.pause();
 
     
 });
