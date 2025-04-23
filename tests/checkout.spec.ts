@@ -1,11 +1,11 @@
-import { test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { CheckoutPage } from '../pages/checkout.page';
 import { userData } from '../data/testdata';
 
 
 
 
-test('Complete Order', async ({page})=>{
+test('Complete Order', async ({ page, request }) => {
     const checkoutPage = new CheckoutPage(page);
     await checkoutPage.goTo();
     await checkoutPage.fillFirstName(userData.name);
@@ -23,9 +23,19 @@ test('Complete Order', async ({page})=>{
     await checkoutPage.fillCvc(456);
     await checkoutPage.clickAggreeTerms();
     await checkoutPage.clickPlaceOrder();
-    console.log('test exitoso');
-    
-    //await page.pause();
 
-    
+    const orderId = await checkoutPage.getOrderId();
+    console.log(orderId)
+    const orderResponse = await request.get(
+        `https://automation-portal-bootcamp.vercel.app/api/orders/${orderId}`,
+    );
+    expect(orderResponse.ok()).toBeTruthy();
+
+    const order = await orderResponse.json();
+    console.log(order)
+    console.log('test exitoso');
+
+    await page.pause();
+
+
 });
