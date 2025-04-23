@@ -18,7 +18,7 @@ export const userData = {
     password: faker.internet.password(),
     country:'Colombia',
     town: faker.location.city(),
-    address: faker.location.direction(),
+    address: faker.location.streetAddress(),
     notes:'sajoajsojaosjaosjaojsoajsojasjaojosnsdbsgds'
 
 };
