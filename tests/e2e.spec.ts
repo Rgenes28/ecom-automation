@@ -6,30 +6,24 @@ import { RegisterPage } from '../pages/register.page'
 import { MyAccountPage } from '../pages/myaccount.page'
 import { ProductPage } from '../pages/product.page'
 import { CheckoutPage } from '../pages/checkout.page'
+import { UserApiClient } from '../api-clients/user.api-client'
 
 
 const authToken = 'mi-token-super-secreto';
 
-test.afterEach(async ({ request}) => {
-  const response = await request.get(`https://automation-portal-bootcamp.vercel.app/api/user?email=${userData.email}`);
-  const user = await response.json();
+test.afterEach(async ({ request }) => {
+  const userApi = new UserApiClient(request);
 
-  console.log(user.id);
-  if (user?.id) {
-    const deleteUser = await request.delete(
-      `https://automation-portal-bootcamp.vercel.app/api/user/${user.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
-      }
-    );
-    console.log(`Usuario eliminado correctamente: ${userData.email}`);
+  const user = await userApi.findUserByEmail(userData.email);
+
+  console.log('Usuario encontrado:', user.id);
+
+  if (user.id) {
+    const deletedUser = await userApi.deleteUserById(user.id, authToken);
+    console.log('Usuario eliminado:', deletedUser);
   } else {
-    console.warn(`Usuario no encontrado para eliminar: ${userData.email}`);
+    console.log('No se encontró el usuario para eliminar');
   }
-  
-  
 });
 
 test('End to End Test', async ({ page, request }) => {
@@ -66,6 +60,7 @@ test('End to End Test', async ({ page, request }) => {
   await checkoutPage.fillDiscountForm('leon123');
   await checkoutPage.fillCreditCartForm(4242424242424242, "12/97", 456);
   await checkoutPage.clickPlaceOrder();
+  
   const messageOfOrderPlaced = await checkoutPage.getPlacedOrderMessage()
   expect(messageOfOrderPlaced).toContain('Order saved successfully! Your order ID is')
 
