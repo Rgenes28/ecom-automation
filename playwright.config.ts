@@ -1,13 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// ;
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
 const envName = process.env.ENVIRONMENT;
 
 let envFile = '.env'; // Default
@@ -43,6 +41,12 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+  },
+
+  expect: {
+    timeout: 15000
   },
 
   /* Configure projects for major browsers */
@@ -51,7 +55,6 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     }
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
