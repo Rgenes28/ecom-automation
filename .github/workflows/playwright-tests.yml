@@ -9,6 +9,12 @@ jobs:
   run-playwright-tests:
     runs-on: ubuntu-latest
 
+    env:
+      USER_VALID_ECOM: ${{ secrets.USER_VALID_ECOM }}
+      PASS_VALID_ECOM: ${{ secrets.PASS_VALID_ECOM }}
+      USER_INVALID_ECOM: ${{ secrets.USER_INVALID_ECOM }}
+      PASS_INVALID_ECOM: ${{ secrets.PASS_INVALID_ECOM }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
