@@ -22,7 +22,6 @@ export class HomePage {
   async clikCloseModal(){
     await expect(this.modalClose).toBeVisible();
     await this.modalClose.click();
-    await this.page.waitForSelector("div.modal-top", { state: "hidden" });
   }
   async selectfirstRaquet(){
     await this.firstRaquet.click();
