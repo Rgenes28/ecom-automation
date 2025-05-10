@@ -90,9 +90,8 @@ export class CheckoutPage {
   }
   async clickPlaceOrder() {
     await this.placeOrderButton.click();
-    const successMessage = this.page.locator('text=Order saved successfully!');
-    await expect(successMessage).toBeVisible({ timeout: 5000 });
-    await this.page.screenshot({ path: 'screenshots/saved-successfully.png', fullPage: true });
+    await expect(this.messageOrderPlacedLabel).toBeVisible();
+ 
   }
 
 
